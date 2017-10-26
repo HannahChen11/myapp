@@ -1,0 +1,58 @@
+
+<html>
+        <head>
+        <meta charset ="utf-8">
+        <title>name1</title>
+        <style>
+        canvas{
+            border:1px soild black;
+        }
+        
+        </style>
+        </head>
+        
+        <body>
+        <canvas id="t_con"height="300px" width="300px" style="border: 2px solid black;"></canvas>
+        <script type="text/javascript">
+            var canvas = document.getElementsByTagName('canvas')[0];
+            canvas.width = 640;
+            canvas.height = 640;
+            if(canvas.getContext){
+                var ctx = canvas.getContext("2d"),
+                    width = canvas.width,
+                    height = canvas.height;
+                ctx.lineWidth = 2;
+        　　　　　　　//先画横线
+                for( var i = 1; i * 40 < height; i++ ){
+                    ctx.strokeStyle = 'black' ;
+                    ctx.beginPath();
+                    ctx.moveTo(0,i * 40);
+                    ctx.lineTo(width,i* 40);
+                    ctx.stroke();
+                }
+        　　　　　　　//再画纵线
+                for( var j = 1; j * 40 < width; j++ ){
+                    ctx.strokeStyle = 'balck';
+                    ctx.beginPath();
+                    ctx.moveTo(j * 40, 0);
+                    ctx.lineTo(j * 40, height);
+                    ctx.stroke();
+                }
+        
+            }
+        
+                //获取Canvas对象(画布)
+                var canvas = document.getElementById("t_con");
+        
+                if(canvas.getContext){  
+                    //获取对应的CanvasRenderingContext2D对象(画笔)
+                    var ctx = canvas.getContext("2d");
+                    
+                    //设置字体样式和大小
+                    ctx.font = "550px 等线";
+                    //设置字体填充颜色
+                    ctx.fillStyle = "red";
+                    //从自定义的坐标点开始绘制文字
+                    ctx.fillText("雨", 50,450 );
+                }
+                </script>
