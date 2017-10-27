@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+<head> 
+    <title>
+            tiaoma
+    </title>
+    <link rel='stylesheets' href='/stylesheets/style.css' />
+</head>
+<body>
+
+<table  border="2" width="1000" cellpadding="5" bordercolor="gray">
+<tr>
+    <th>棋盘行数m</th>
+    <th>棋盘列数n</th>
+</tr>
+<tr>
+	<td>
+		<input type="text" id="rows" value="">
+	</td>
+    <td>
+        <input type="text" id="cols" value="">
+	</td>
+</tr>
+<tr>
+	<td colspan="4">   
+        <button type="button" onclick="final()">起始坐标为（0,0）计算</button>       
+    </td>
+</tr>
+<tr>
+	<td colspan="4">最终结果为：
+		<div id="final" onclick="final()"></div>
+	</td>
+</tr>
+<tr>
+	<td colspan="4">      
+        <button type="button" onclick="finall()">起始坐标为（1,0）计算</button>      
+    </td>
+</tr>
+<tr>
+	<td colspan="4">最终结果为：
+		<div id="finall" onclick="finall()"></div>
+	</td>
+</tr>
+</table>
+<script type="text/javascript">
+  var xmax;
+  var xmin=0;//纵坐标，必须赋予一个初始值
+  var ymax;
+  var ymin=0;//横坐标
+  var num=0;
+  var variety=0; 
+  var bond;//判断边界
+  var stack = new Array(1000);//新建的栈
+  function result(value)
+  {
+     this.value=value;
+  }
+  var result1= new result();//检验是否在棋盘内
+  var result2= new result();//检验是否为重复点
+  var result3= new result();//一个用于判断的条件
+  result2.value=0;
+  function fct(x,y)
+  {
+    this.x=x;
+    this.y=y;
+  }    
+  function location (x,y)//判断棋盘内外
+  {
+     if((x>xmax)||(x<xmin)||(y>ymax)||(y<ymin))
+     {
+       result1.value=1;//表示在棋盘外
+     }
+     else
+     {
+       result1.value=0;//表示在棋盘内
+     }
+  }
+  function bl (stack,x,y)//遍历
+  {
+      var top = 0; 
+     while(stack[top]!=null){
+      if((x==stack[0].x) && (y==stack[0].y))
+    {
+       result2.value = 2; //定义，回到起点
+       break;
+    }
+    else if((x==stack[top].x) && (y==stack[top].y))
+    {
+      result2.value =1; //重复点
+      break;
+    }
+    top++;
+  if (stack[top]==null)
+    {
+      result2.value = 0;//表示该点符合要求
+    }
+   }
+  }
+  function instack(x,y)//入栈函数
+  {
+     var top =0;
+     while(stack[top]!=null)
+     {
+     top++;
+     }
+     stack[top]=new fct();
+     stack[top].x=x;
+     stack[top].y=y;                
+  }
+  function nextstep(stack,flag)
+  {
+        switch(flag)
+        {
+                case 0:
+                location(point.x+1,point.y+2);
+                x=point.x+1;
+                y=point.y+2;
+
+                bl(stack,x,y);//遍历
+                if(result1.value==0&&result2.value==0)//判断这个点是否可走
+               {
+                  point.x=point.x+1;
+                  point.y=point.y+2;
+               return(0);
+               }
+               else if(result2.value == 2)  
+               {
+                point.x=point.x+1;
+                point.y=point.y+2;
+               result3.value=6;
+               return(0);
+               }
+               break;
+              case 1:
+              location(point.x+2,point.y+1);
+              x=point.x+2;
+              y=point.y+1;
+              bl(stack,x,y);
+              if(result1.value==0&&result2.value==0)
+              {
+               point.x=point.x+2;
+               point.y=point.y+1;
+               return(0);
+              }
+              else if(result2.value == 2) 
+             {
+              point.x=point.x+2;
+              point.y=point.y+1;
+             result3.value=6;
+             return(0);
+             }
+              break;	
+             case 2:
+             location(point.x+2,point.y-1);
+             x=point.x+2;
+             y=point.y-1;
+             bl(stack,x,y);
+             if(result1.value==0&&result2.value==0)
+            {
+             point.x=point.x+2;
+             point.y=point.y-1;
+              return(0);
+            }
+            else if(result2.value == 2)  
+             {
+             point.x=point.x+2;
+             point.y=point.y-1;
+             result3.value=6;
+           return(0);
+            }
+             break;
+           case 3:
+           location(point.x+1,point.y-2);
+           x=point.x+1;
+           y=point.y-2;
+
+           bl(stack,x,y);
+           if(result1.value==0&&result2.value==0)
+           {
+           point.x=point.x+1;
+           point.y=point.y-2;
+             return(0);
+            }
+           else if(result2.value == 2)
+          {
+          point.x=point.x+1;
+          point.y=point.y-2;
+          result3.value=6;
+          return(0);
+            }
+           break;	
+           case 4:
+           location(point.x-1,point.y-2);
+           x=point.x-1;
+            y=point.y-2;
+
+             bl(stack,x,y);
+           if(result1.value==0&&result2.value==0)
+          {
+            point.x=point.x-1;
+            point.y=point.y-2;
+            return(0);
+           }
+           else if(result2.value == 2)  
+          {
+            point.x=point.x-1;
+            point.y=point.y-2;
+          result3.value=6;
+          return(0);
+          }
+           break;
+            case 5:
+          location(point.x-2,point.y-1);
+            x=point.x-2;
+           y=point.y-1;
+            bl(stack,x,y);
+            if(result1.value==0&&result2.value==0)
+           {
+            point.x=point.x-2;
+            point.y=point.y-1;
+             return(0);
+             }
+             else if(result2.value == 2) 
+             {
+             point.x=point.x-2;
+             point.y=point.y-1;
+             result3.value=6;
+             return(0);
+            }
+             break;
+            case 
+			6:
+             location(point.x-2,point.y+1);
+             x=point.x-2;
+             y=point.y+1;
+             bl(stack,x,y);
+             if(result1.value==0&&result2.value==0)
+             {
+              point.x=point.x-2;
+              point.y=point.y+1;
+              return(0);
+             }
+            else if(result2.value == 2)  
+            {
+              point.x=point.x-2;
+              point.y=point.y+1;
+              result3.value=6;
+              return(0);
+            }
+           break;
+
+          case 7:
+           location(point.x-1,point.y+2);
+            x=point.x-1;
+           y=point.y+2;
+            bl(stack,x,y);
+           if(result1.value==0&&result2.value==0)
+           {
+           point.x=point.x-1;
+           point.y=point.y+2;
+          return(0);
+          }
+          else if(result2.value == 2)  
+         {
+          point.x=point.x-1;
+          point.y=point.y+2;
+         result3.value=6;
+         return(0);
+         }
+         break;
+     }
+  return(1);
+  } 
+  function jump()
+  {
+      var a=0;
+      var b=0;
+      var x=point.x;
+      var y=point.y;
+      num++;
+      instack(point.x,point.y);
+    if(result3.value==6)
+    {
+     while(stack[b]!=null)
+    {
+      if(num<=bond)
+          break;          
+       document.getElementById("final").innerHTML= document.getElementById("final").innerHTML+"("+stack[b].x+","+stack[b].y+")"+"  -->   ";
+       b++;
+    }
+    if(num>bond)
+    {
+    document.getElementById("final").innerHTML=document.getElementById("final").innerHTML+"<br\>";
+    }
+    result3.value=0;
+     variety++;
+    }
+    for(;a<8;a++)
+    {
+      point.x = x;
+      point.y = y;
+      if(nextstep(stack,a)==0)
+      {
+        jump(); 
+        stack[num-1]=null;
+        num--;
+      }
+    }
+  } 
+  var point = new fct();
+  point.x=0;//起始点
+  point.y=0; 
+  function final()
+  {
+    xmax=document.getElementById("cols").value-1;
+    ymax=document.getElementById("rows").value-1;
+    bond=(xmax+1)*(ymax+1)-2;
+    jump();
+  }
+  var pointt = new fct();
+  pointt.xx=1;//起始点为（1,0）
+  pointt.yy=0; 
+  function nextstepp(stack,flag)
+  {
+        switch(flag)
+        {
+                case 0: 
+                location(pointt.xx+1,pointt.yy+2);
+                xx=pointt.xx+1;
+                yy=pointt.yy+2;
+                bl(stack,xx,yy);//遍历
+                if(result1.value==0&&result2.value==0)//判断这个点是否可走
+               {
+                  pointt.xx=pointt.xx+1;
+                  pointt.yy=pointt.yy+2;
+               return(0);
+               }
+               else if(result2.value == 2)  
+               {
+                pointt.xx=pointt.xx+1;
+                pointt.yy=pointt.yy+2;
+               result3.value=6;
+               return(0);
+               }
+               break;
+              case 1:
+              location(pointt.xx+2,pointt.yy+1);
+              xx=pointt.xx+2;
+              yy=pointt.yy+1;
+
+              bl(stack,xx,yy);
+              if(result1.value==0&&result2.value==0)
+              {
+               pointt.xx=pointt.xx+2;
+               pointt.yy=pointt.yy+1;
+               return(0);
+              }
+              else if(result2.value == 2) 
+             {
+              pointt.xx=pointt.xx+2;
+              pointt.yy=pointt.yy+1;
+             result3.value=6;
+             return(0);
+             }
+              break;
+             case 2:
+             location(pointt.xx+2,pointt.yy-1);
+             xx=pointt.xx+2;
+             yy=pointt.yy-1;
+
+             bl(stack,xx,yy);
+             if(result1.value==0&&result2.value==0)
+            {
+             pointt.xx=pointt.xx+2;
+             pointt.yy=pointt.yy-1;
+              return(0);
+            }
+            else if(result2.value == 2)  
+             {
+             pointt.xx=pointt.xx+2;
+             pointt.yy=pyointt.yy-1;
+             result3.value=6;
+           return(0);
+            }
+             break;
+
+           case 3:
+           location(pointt.xx+1,pointt.yy-2);
+           xx=pointt.xx+1;
+           yy=pointt.yy-2;
+
+           bl(stack,xx,yy);
+           if(result1.value==0&&result2.value==0)
+           {
+           pointt.xx=pointt.xx+1;
+           pointt.yy=pointt.yy-2;
+             return(0);
+            }
+           else if(result2.value == 2)
+          {
+          pointt.xx=pointt.xx+1;
+          pointt.yy=pointt.yy-2;
+          result3.value=6;
+          return(0);
+            }
+           break;
+				
+           case 4:
+           location(pointt.xx-1,pointt.yy-2);
+           xx=pointt.xx-1;
+            yy=pointt.yy-2;
+
+             bl(stack,xx,yy);
+           if(result1.value==0&&result2.value==0)
+          {
+            pointt.xx=pointt.xx-1;
+            pointt.yy=pointt.yy-2;
+            return(0);
+           }
+           else if(result2.value == 2)  
+          {
+            pointt.xx=pointt.xx-1;
+            pointt.yy=pointt.yy-2;
+          result3.value=6;
+          return(0);
+          }
+           break;
+
+            case 5:
+          location(pointt.xx-2,pointt.yy-1);
+            xx=pointt.xx-2;
+           yy=pointt.yy-1;
+            bl(stack,xx,yy);
+            if(result1.value==0&&result2.value==0)
+           {
+            pointt.xx=pointt.xx-2;
+            pointt.yy=pointt.yy-1;
+             return(0);
+             }
+             else if(result2.value == 2) 
+             {
+             pointt.xx=pointt.xx-2;
+             pointt.yy=pointt.yy-1;
+             result3.value=6;
+             return(0);
+            }
+             break;
+
+            case 
+			6:
+             location(pointt.xx-2,pointt.yy+1);
+             xx=pointt.xx-2;
+             yy=pointt.yy+1;
+             bl(stack,xx,yy);
+             if(result1.value==0&&result2.value==0)
+             {
+              pointt.xx=pointt.xx-2;
+              pointt.yy=pointt.yy+1;
+              return(0);
+             }
+            else if(result2.value == 2)  
+            {
+              pointt.xx=pointt.xx-2;
+              pointt.yy=pointt.yy+1;
+              result3.value=6;
+              return(0);
+            }
+           break;
+
+          case 7:
+           location(pointt.xx-1,pointt.yy+2);
+            xx=pointt.xx-1;
+           yy=pointt.yy+2;
+            bl(stack,xx,yy);
+           if(result1.value==0&&result2.value==0)
+           {
+           pointt.xx=pointt.xx-1;
+           pointt.yy=pointt.yy+2;
+          return(0);
+          }
+          else if(result2.value == 2)  
+         {
+          pointt.xx=pointt.xx-1;
+          pointt.yy=pointt.yy+2;
+         result3.value=6;
+         return(0);
+         }
+         break;
+     }
+  return(1);
+  } 
+  function jumpp()
+  {
+      var a=0;
+      var b=0;
+      var xx=pointt.xx;
+      var yy=pointt.yy;
+
+      num++;
+      instack(pointt.xx,pointt.yy);
+    if(result3.value==6)
+    {
+     while(stack[b]!=null)
+    {
+      if(num<=bond)
+          break;          
+       document.getElementById("finall").innerHTML= document.getElementById("finall").innerHTML+"("+stack[b].x+","+stack[b].y+")"+"  -->   ";
+       b++;
+    }
+
+    if(num>bond)
+    {
+    document.getElementById("finall").innerHTML=document.getElementById("finall").innerHTML+"<br\>";
+    }
+    result3.value=0;
+     variety++;
+    }
+    for(;a<8;a++)//八个方向
+    {
+      pointt.xx = xx;
+      pointt.yy = yy;
+      if(nextstepp(stack,a)==0)
+      {
+        jumpp(); 
+        stack[num-1]=null;
+        num--;
+      }
+    }
+  } 
+  function finall()
+  {
+    xmax=document.getElementById("cols").value-1;
+    ymax=document.getElementById("rows").value-1;
+    bond=(xmax+1)*(ymax+1)-2;
+    jumpp();
+  }
+  </script>
+</body>
+</html>
