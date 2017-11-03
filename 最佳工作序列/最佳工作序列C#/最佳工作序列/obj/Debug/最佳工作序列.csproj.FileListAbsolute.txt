@@ -1,0 +1,14 @@
+F:\Study\大三上\GIS算法和基础-张宏\作业\9.15第一次课（跳马，序列）\最佳工作序列\最佳工作序列\bin\Debug\最佳工作序列.exe.config
+F:\Study\大三上\GIS算法和基础-张宏\作业\9.15第一次课（跳马，序列）\最佳工作序列\最佳工作序列\bin\Debug\最佳工作序列.exe
+F:\Study\大三上\GIS算法和基础-张宏\作业\9.15第一次课（跳马，序列）\最佳工作序列\最佳工作序列\bin\Debug\最佳工作序列.pdb
+F:\Study\大三上\GIS算法和基础-张宏\作业\9.15第一次课（跳马，序列）\最佳工作序列\最佳工作序列\obj\Debug\最佳工作序列.exe
+F:\Study\大三上\GIS算法和基础-张宏\作业\9.15第一次课（跳马，序列）\最佳工作序列\最佳工作序列\obj\Debug\最佳工作序列.pdb
+C:\Users\Lenovo\Desktop\GIS算法\1跳马+工作序列\作业\最佳工作序列\最佳工作序列\bin\Debug\最佳工作序列.exe.config
+C:\Users\Lenovo\Desktop\GIS算法\1跳马+工作序列\作业\最佳工作序列\最佳工作序列\obj\Debug\最佳工作序列.exe
+C:\Users\Lenovo\Desktop\GIS算法\1跳马+工作序列\作业\最佳工作序列\最佳工作序列\obj\Debug\最佳工作序列.pdb
+C:\Users\vghj\Desktop\最佳工作序列\最佳工作序列\最佳工作序列\bin\Debug\最佳工作序列.exe.config
+C:\Users\vghj\Desktop\最佳工作序列\最佳工作序列\最佳工作序列\obj\Debug\最佳工作序列.exe
+C:\Users\vghj\Desktop\最佳工作序列\最佳工作序列\最佳工作序列\obj\Debug\最佳工作序列.pdb
+C:\Users\vghj\Desktop\最佳工作序列\最佳工作序列\最佳工作序列\bin\Debug\最佳工作序列.exe
+C:\Users\vghj\Desktop\最佳工作序列\最佳工作序列\最佳工作序列\bin\Debug\最佳工作序列.pdb
+C:\Users\vghj\Desktop\最佳工作序列\最佳工作序列\最佳工作序列\obj\Debug\最佳工作序列.csprojResolveAssemblyReference.cache

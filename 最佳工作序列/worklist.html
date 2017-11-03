@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head> 
+    <title>
+            worklist
+    </title>
+    <link rel='stylesheets' href='/stylesheets/style.css' />
+</head>
+<body>
+
+        <table  border="2" width="1000" cellpadding="5" bordercolor="black">
+                <tr>
+                    <th>ID</th>
+                    <th>time</th>
+                    <th>limit</th>
+                    <th>value</th>
+                </tr>
+                <tr>
+                        <th>1</th>
+                        <th>4</th>
+                        <th>10</th>
+                        <th>2</th>
+                </tr>
+                <tr>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>8</th>
+                        <th>3</th>
+                </tr>
+                <tr>
+                        <th>3</th>
+                        <th>2</th>
+                        <th>4</th>
+                        <th>3</th>
+                </tr>
+                <tr>
+                        <th>4</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>6</th>
+                </tr>
+                <tr>
+   
+                            
+                            <td colspan="4">
+                            <button type="button" onclick="best()">求最佳工作序列</button>
+                            <div id="final" onclick="best()"></div>
+                            </td>  
+                </tr>
+                </table>
+
+                <script type="text/javascript">
+
+                        function maopao(task)//冒泡排序
+                        {
+                            var result =new Array();//排序后的序列
+                            var limit;//工作期限
+                            var time;//工作费时                        
+                            
+                            var timesum=0;
+                            for(var i=0;i<task.length;i++){
+                                timesum+=task[i].time;
+                            }
+                            for(var i=0;i<timesum;i++){
+                                result[i]=-1;
+                            }
+                            
+                            for(var i=0;i<task.length;i++){
+                                limit=task[i].dead-1;
+                                time=task[i].time;
+                                if(result[limit]==-1){
+                                    result[limit]=i;
+                                    time--;
+                                }
+                                for(var j=limit-1;j>= 0;j--){//往前找
+                                    if(!time){
+                                        break;
+                                    }
+                                    if(result[j]==-1){
+                                        result[j]=i;
+                                        time--;    
+                                    }
+                                }
+                            }
+
+                            document.write(task[result[0]].id);
+                            
+                            for(var k=0;k<timesum;k++)
+                            {
+                            
+                                if(k<10){
+                                    if(task[result[k]].id!=task[result[k+1]].id)//避免重复显示
+                                    {
+                                        document.write(task[result[k+1]].id);
+                                    }
+                               }
+                            }
+                        }
+                           
+                           function change(task) //根据排序后的结果来比较任务排序
+                            {
+                            var len = task.length;
+                            //按照平均价值排序
+                            for (var i = 0; i < len; i++) {
+                                for (var j = 0; j < len - 1 - i; j++) {
+                                    if (task[j].valueaverage < task[j+1].valueaverage) {      
+                                        var temp = task[j+1];        //如果后者比前者的平均价值高，则交换
+                                        task[j+1] = task[j];
+                                        task[j] = temp;
+                                    }
+                                }
+                            }
+                         
+                           for (var i = 0; i < len-1; i++) {
+                               if(task[i].valueaverage == task[i+1].valueaverage && task[i+1].dead < task[i].dead){  //如果平均价值相同，则期限长的往后排
+                                    var temp = task[i+1];        
+                                    task[i+1] = task[i];
+                                    task[i] = temp;
+                               }
+                           }
+                            return task;
+                        }
+
+                        function array(id,time,dead,valueaverage)
+                        {
+                            this.id=id;
+                            this.time=time;
+                            this.dead=dead;
+                            this.valueaverage=valueaverage;
+                        }
+
+                        function best()//执行计算
+                        {
+                            var task = new Array();
+                            var one = new array(1, 4, 10, 2);
+                            var two = new array(2, 3, 8, 3 );
+                            var three = new array(3, 2, 4, 3 );
+                            var four = new array(4, 1, 2, 6);
+                           
+                            task[0] = one;
+                            task[1] = two;
+                            task[2] = three;
+                            task[3] = four;
+                            
+                            document.write("最佳工作序列为：");
+                            maopao(task);
+                            change(task);
+                        }
+
+</script>
+            </body>
+            </html>
+        </DOCTYPE> 
