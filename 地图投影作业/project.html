@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>project</title>
+       
+    <body>
+            <script type="text/javascript"></script>
+        <div>
+            <input type="file" id="filepick">
+            <input type="button" value="中国地图北京54显示" onclick="readwrite()">
+            <input type="button" value="中国地图兰伯特投影" onclick="lbt()">
+            <input type="button" value="中国地图墨卡托投影" onclick="mkt()">
+            <br></br>
+            
+            <input type="button" value="世界地图WGS84显示" onclick="wgs()">
+            <input type="button" value="世界地图墨卡托投影" onclick="mktworld()">
+            <input type="button" value="北京巴黎大圆航线显示" onclick="bigcircle()">
+            <input type="button" value="清空" onclick="clearCanvas()">
+            </div>
+            <div class="bg-right">
+                <canvas id="cname" width="300px" height="300px"style="border: 2px solid black;"></canvas>
+        </div>    
+        <script type="text/javascript">
+
+var canvas = document.getElementsByTagName('canvas')[0];
+    canvas.width = 800;//定义画布的长宽
+    canvas.height =800;
+    
+      
+        function clearCanvas()  //清空画布的函数
+{  
+    var cxt=document.getElementById("cname").getContext("2d");
+    cxt.clearRect(0,0,canvas.width,canvas.height); 
+}         
+
+         function Point(x,y)
+        {
+            this.x=x;
+            this.y=y;
+        }
+
+        function readwrite()//绘制并显示基于北京54坐标系的地图
+        {   
+            var cxt=document.getElementById("cname").getContext("2d");
+           cxt.clearRect(0,0,canvas.width,canvas.height); 
+
+           if(canvas.getContext){
+        var ctx = canvas.getContext("2d"),
+            width = canvas.width,
+            height = canvas.height;
+        ctx.lineWidth = 2;
+　　　　　　　
+        for( var i = 1; i * 50 < height; i++ ){
+            ctx.strokeStyle = 'black' ;//线的颜色
+            ctx.beginPath();
+            ctx.moveTo(0,i * 50);
+            ctx.lineTo(width,i* 50);
+            ctx.stroke();
+        }
+　　　　　　
+        for( var j = 1; j * 50 < width; j++ ){
+            ctx.strokeStyle = 'balck';
+            ctx.beginPath();
+            ctx.moveTo(j * 50, 0);
+            ctx.lineTo(j * 50, height);
+            ctx.stroke();
+        }
+    }
+ 
+            var inputfile = document.getElementById("filepick").files[0];
+            var reader = new FileReader();
+            reader.readAsText(inputfile);
+            reader.onload=function(e)
+            {   
+                var text=reader.result.split("\r\n");
+           
+                var string=new Array();
+                var e=0;
+                string[e]=new Array();
+        
+                var l=text.length;
+                var n=0;
+                for(i=1;i<l-1;i++) 
+                {   
+                    
+                    if(text[i]!="END")
+                    {   
+                        if(text[i].length!=1&&text[i].length!=2&&text[i].length!=3&&text[i].length!=4)
+                        {
+                        var x;
+                        var y;
+                        x=text[i].split(",")[0];
+                        y=text[i].split(",")[1];
+                        string[e][n]=new Point(x,y);
+                        n++;
+                        }
+                    }
+                    else
+                    {
+                        n=0;
+                        e=e+1;
+                        string[e]=new Array();
+                    }
+                }
+                var canvas = document.getElementById("cname");
+                var cxt = canvas.getContext("2d");
+                cxt.beginPath();
+                cxt.strokeStyle = "orange"; 
+                cxt.lineWidth = 6;
+                for(i=0;i<e+1;i++)
+                {
+                    for(j=0;j<string[i].length-1;j++)
+                    {
+                        cxt.moveTo((string[i][j].x)*10-650,800-(string[i][j].y)*10-100);
+                        cxt.lineTo((string[i][j+1].x)*10-650,800-(string[i][j+1].y)*10-100); 
+                    }
+                }
+                cxt.stroke();
+            }  
+        }
+
+
+        function mkt()//墨卡托投影
+        {   
+            var cxt=document.getElementById("cname").getContext("2d");
+           cxt.clearRect(0,0,canvas.width,canvas.height); 
+
+           if(canvas.getContext){
+        var ctx = canvas.getContext("2d"),
+            width = canvas.width,
+            height = canvas.height;
+        ctx.lineWidth = 2;//线的宽细
+　　　　　　　//画横线
+        for( var i = 1; i * 65 < height; i++ ){
+            ctx.strokeStyle = 'black' ;//线的颜色
+            ctx.beginPath();
+            ctx.moveTo(0,i * 65);
+            ctx.lineTo(width,i* 65);
+            ctx.stroke();
+        }
+　　　　　　　//画纵线
+        for( var j = 1; j * 55 < width; j++ ){
+            ctx.strokeStyle = 'balck';
+            ctx.beginPath();
+            ctx.moveTo(j * 55, 0);
+            ctx.lineTo(j * 55, height);
+            ctx.stroke();
+        }
+    }
+
+            var inputfile = document.getElementById("filepick").files[0];
+            var reader = new FileReader();
+            reader.readAsText(inputfile);
+            reader.onload=function(e)
+            {   
+                var text=reader.result.split("\r\n");
+                var string=new Array();
+                var e=0;
+                string[e]=new Array();
+        
+                var l=text.length;
+                var n=0;
+                for(i=1;i<l-1;i++)
+                {   
+                    
+                    if(text[i]!="END")
+                    {   
+                        if(text[i].length!=1&&text[i].length!=2&&text[i].length!=3&&text[i].length!=4)
+                        {
+                        var x;
+                        var y;
+                        x=text[i].split(",")[0];
+                        y=text[i].split(",")[1];
+                        string[e][n]=new Point(x,y);
+                        n++;
+                        }
+                        
+                    }
+                    else
+                    {
+                        n=0;
+                        e=e+1;
+                        string[e]=new Array();
+                    }
+                }
+                var canvas = document.getElementById("cname");
+                var cxt = canvas.getContext("2d");
+                cxt.beginPath();
+                cxt.strokeStyle = "blue"; 
+                cxt.lineWidth = 3;
+                for(i=0;i<e+1;i++)
+                {
+                    for(j=0;j<string[i].length-1;j++)
+                    {
+                        
+                       var a = 6378245;               //长半轴
+                       var b = 6356863.01877;         //短半轴
+                       var e0 = 0.006693421622966;    //第一偏心率平方
+                       var e1 = 0.006738525414684;    //第二偏心率平方
+
+                      var L0 = 105 * Math.PI / 180;  //原点经度
+                      var B0 = 0;                    //原点纬度
+                      var B1 = 20 * Math.PI / 180;   //第一标准纬线
+                      var B2 = 40 * Math.PI / 180;   //第二标准纬线
+                  
+                    cxt.moveTo(-(16-(((Math.pow(a, 2) / b) / Math.sqrt(1 + e1)) * ((string[i][j].x * Math.PI / 180) - L0))/10000+500)+900,-((((Math.pow(a, 2) / b) / Math.sqrt(1 + e1)) * Math.log((Math.tan(Math.PI / 4 + (string[i][j].y * Math.PI / 180) / 2)) * Math.pow(((1 - Math.sqrt(e0) * Math.sin(string[i][j].y * Math.PI / 180)) / (1 + Math.sqrt(e0) * Math.sin(string[i][j].y* Math.PI / 180))), (Math.sqrt(e0) / 2)), Math.E))/10000)+800);
+                    cxt.lineTo(-(16-(((Math.pow(a, 2) / b) / Math.sqrt(1 + e1)) * ((string[i][j+1].x * Math.PI / 180) - L0))/10000+500)+900,-((((Math.pow(a, 2) / b) / Math.sqrt(1 + e1)) * Math.log((Math.tan(Math.PI / 4 + (string[i][j+1].y * Math.PI / 180) / 2)) * Math.pow(((1 - Math.sqrt(e0) * Math.sin(string[i][j+1].y * Math.PI / 180)) / (1 + Math.sqrt(e0) * Math.sin(string[i][j+1].y* Math.PI / 180))), (Math.sqrt(e0) / 2)), Math.E))/10000)+800);
+
+                    }
+                }
+                cxt.stroke();
+            }  
+        }
+
+        function lbt()//兰伯特投影
+        {   
+            var cxt=document.getElementById("cname").getContext("2d");
+           cxt.clearRect(0,0,canvas.width,canvas.height); 
+
+
+            var inputfile = document.getElementById("filepick").files[0];
+            var reader = new FileReader();
+            reader.readAsText(inputfile);
+            reader.onload=function(e)
+            {   
+                var text=reader.result.split("\r\n");
+                var string=new Array();
+                var e=0;
+                string[e]=new Array();
+        
+                var l=text.length;
+                var n=0;
+                for(i=1;i<l-1;i++)
+                {   
+                    
+                    if(text[i]!="END")
+                    {   
+                        if(text[i].length!=1&&text[i].length!=2&&text[i].length!=3&&text[i].length!=4)
+                        {
+                        var x;
+                        var y;
+                        x=text[i].split(",")[0];
+                        y=text[i].split(",")[1];
+                        string[e][n]=new Point(x,y);
+                        n++;
+                        }
+                        
+                    }
+                    else
+                    {
+                        n=0;
+                        e=e+1;
+                        string[e]=new Array();
+                    }
+                }
+                var canvas = document.getElementById("cname");
+                var cxt = canvas.getContext("2d");
+                cxt.beginPath();
+                cxt.strokeStyle = "green"; 
+                cxt.lineWidth = 3;
+                for(i=0;i<e+1;i++)
+                {
+                    for(j=0;j<string[i].length-1;j++)
+                    {
+                        var a = 6378245;               //长半轴
+                       var b = 6356863.01877;         //短半轴
+                       var e0 = 0.006693421622966;    //第一偏心率平方
+                       var e1 = 0.006738525414684;    //第二偏心率平方
+
+                      var L0 = 105 * Math.PI / 180;  //原点经度
+                      var B0 = 0;                    //原点纬度
+                      var B1 = 20 * Math.PI / 180;   //第一标准纬线
+                      var B2 = 40 * Math.PI / 180;   //第二标准纬线
+
+
+
+            var mb1 = Math.cos(B1) / Math.sqrt(1 - e0 * Math.pow(Math.sin(B1), 2));
+            var mb2 = Math.cos(B2) / Math.sqrt(1 - e0 * Math.pow(Math.sin(B2), 2));
+            var tb1 = Math.tan(Math.PI / 4 - B1 / 2) / Math.pow(((1 - Math.sqrt(e0) * Math.sin(B1)) / (1 + Math.sqrt(e0) * Math.sin(B1))), (Math.sqrt(e0) / 2));
+            var tb2 = Math.tan(Math.PI / 4 - B2 / 2) / Math.pow(((1 - Math.sqrt(e0) * Math.sin(B2)) / (1 + Math.sqrt(e0) * Math.sin(B1))), (Math.sqrt(e0) / 2));
+            var n = Math.log(mb1 / mb2, Math.E) / Math.log(tb1 / tb2, Math.E);
+            var f = mb1 / (n * Math.pow(tb1, n));
+            var r0 = a * f;
+            var ct,r;
+
+
+            r = a * f * Math.pow(Math.tan(Math.PI / 4 - (string[i][j].y * Math.PI / 180) / 2) / Math.pow(((1 - Math.sqrt(e0) * Math.sin(string[i][j].y * Math.PI / 180)) / (1 + Math.sqrt(e0) * Math.sin(string[i][j].y * Math.PI / 180))), (Math.sqrt(e0) / 2)), n);
+            ct = n * (string[i][j].x * Math.PI / 180 - L0);
+           var r2 = a * f * Math.pow(Math.tan(Math.PI / 4 - (string[i][j+1].y * Math.PI / 180) / 2) / Math.pow(((1 - Math.sqrt(e0) * Math.sin(string[i][j+1].y * Math.PI / 180)) / (1 + Math.sqrt(e0) * Math.sin(string[i][j+1].y * Math.PI / 180))), (Math.sqrt(e0) / 2)), n);
+           var ct2 = n * (string[i][j+1].x * Math.PI / 180 - L0);
+
+            var xn= r0 - r * Math.cos(ct);
+            var ye= r * Math.sin(ct);
+            var xn2=r0 - r2 * Math.cos(ct2);
+            var ye2= r2 * Math.sin(ct2);
+
+            cxt.moveTo((ye)/10000+400,800-(xn)/10000);
+            cxt.lineTo((ye2)/10000+400,800-(xn2)/10000); 
+
+                    }
+                }
+                cxt.stroke();
+            }  
+        }
+
+        function wgs()//绘制并显示基于wgs坐标系的地图
+        {   
+            var cxt=document.getElementById("cname").getContext("2d");
+           cxt.clearRect(0,0,canvas.width,canvas.height); 
+      
+            var inputfile = document.getElementById("filepick").files[0];
+            var reader = new FileReader();
+            reader.readAsText(inputfile);
+            reader.onload=function(e)
+            {   
+                var text=reader.result.split("\r\n");
+           
+                var string=new Array();
+                var e=0;
+                string[e]=new Array();
+        
+                var l=text.length;
+                var n=0;
+                for(i=1;i<l-1;i++) 
+                {   
+                    
+                    if(text[i]!="END")
+                    {   
+                        if(text[i].length!=1&&text[i].length!=2&&text[i].length!=3&&text[i].length!=4)
+                        {
+                        var x;
+                        var y;
+                        x=text[i].split(",")[0];
+                        y=text[i].split(",")[1];
+                        string[e][n]=new Point(x,y);
+                        n++;
+                        }
+                    }
+                    else
+                    {
+                        n=0;
+                        e=e+1;
+                        string[e]=new Array();
+                    }
+                }
+                var canvas = document.getElementById("cname");
+                var cxt = canvas.getContext("2d");
+                cxt.beginPath();
+                cxt.strokeStyle = "red"; 
+                cxt.lineWidth = 2;
+                for(i=0;i<e+1;i++)
+                {
+                    for(j=0;j<string[i].length-1;j++)
+                    {
+                        
+                        cxt.moveTo((string[i][j].x)*2+380,800-(string[i][j].y)*2-350);
+                        cxt.lineTo((string[i][j+1].x)*2+380,800-(string[i][j+1].y)*2-350); 
+                    }
+                }
+                cxt.stroke();
+            }  
+        }
+
+        function mktworld()//绘制并显示世界地图的墨卡托投影
+        {   
+            var cxt=document.getElementById("cname").getContext("2d");
+           cxt.clearRect(0,0,canvas.width,canvas.height); 
+
+            var inputfile = document.getElementById("filepick").files[0];
+            var reader = new FileReader();
+            reader.readAsText(inputfile);
+            reader.onload=function(e)
+            {   
+                var text=reader.result.split("\r\n");
+           
+                var string=new Array();
+                var e=0;
+                string[e]=new Array();
+        
+                var l=text.length;
+                var n=0;
+                for(i=1;i<l-1;i++) 
+                {   
+                    
+                    if(text[i]!="END")
+                    {   
+                        if(text[i].length!=1&&text[i].length!=2&&text[i].length!=3&&text[i].length!=4)
+                        {
+                        var x;
+                        var y;
+                        x=text[i].split(",")[0];
+                        y=text[i].split(",")[1];
+                        string[e][n]=new Point(x,y);
+                        n++;
+                        }
+                    }
+                    else
+                    {
+                        n=0;
+                        e=e+1;
+                        string[e]=new Array();
+                    }
+                }
+                var canvas = document.getElementById("cname");
+                var cxt = canvas.getContext("2d");
+                cxt.beginPath();
+                cxt.strokeStyle = "blue"; 
+                cxt.lineWidth = 2;
+                for(i=0;i<e+1;i++)
+                {
+                    for(j=0;j<string[i].length-1;j++)
+                    {
+                        
+                        var a1 = 6378137;               //长半轴
+                        var b1 = 6356752.3142;         //短半轴
+                        var e01 = 0.00669437999013;    //第一偏心率平方
+                        var e11 = 0.006739496742227;    //第二偏心率平方
+                       
+                        var xnworld = (((Math.pow(a1, 2) / b1) / Math.sqrt(1 + e11)) * Math.log((Math.tan(Math.PI / 4 + (string[i][j].y* Math.PI / 180) / 2)) * Math.pow(((1 - Math.sqrt(e01) * Math.sin(string[i][j].y * Math.PI / 180)) / (1 + Math.sqrt(e01) * Math.sin(string[i][j].y * Math.PI / 180))), (Math.sqrt(e01) / 2)), Math.E));
+                        var yeworld = (((Math.pow(a1, 2) / b1) / Math.sqrt(1 + e11)) * ((string[i][j].x * Math.PI / 180) - 0));
+                        var xnworld2=(((Math.pow(a1, 2) / b1) / Math.sqrt(1 + e11)) * Math.log((Math.tan(Math.PI / 4 + (string[i][j+1].y * Math.PI / 180) / 2)) * Math.pow(((1 - Math.sqrt(e01) * Math.sin(string[i][j+1].y * Math.PI / 180)) / (1 + Math.sqrt(e01) * Math.sin(string[i][j+1].y * Math.PI / 180))), (Math.sqrt(e01) / 2)), Math.E));
+                        var yeworld2= (((Math.pow(a1, 2) / b1) / Math.sqrt(1 + e11)) * ((string[i][j+1].x * Math.PI / 180) - 0));
+
+                        cxt.moveTo((yeworld)/100000+400,400-(xnworld)/100000);
+                        cxt.lineTo((yeworld2)/100000+400,400-(xnworld2)/100000); 
+                    }
+                }
+                cxt.stroke();
+            }  
+        }
+
+
+            function bigcircle()
+    {
+        //巴黎坐标
+        var LO1 = 2.2 ;//经度
+        var LA1 = 48.52 ;//纬度
+        //北京坐标
+        var LO2 = 116.4;//经度
+        var LA2 = 39.8;//纬度
+
+        var tanLA1 = Math.tan(LA1 / 180 * Math.PI);
+        var tanLA2 = Math.tan(LA2 / 180 * Math.PI);
+        var sinLO1 = Math.sin(LO1 / 180 * Math.PI);
+        var sinLO2 = Math.sin(LO2 / 180 * Math.PI);
+        var cosLO1 = Math.cos(LO1 / 180 * Math.PI);
+        var cosLO2 = Math.cos(LO2 / 180 * Math.PI);
+        var number = 2000;
+        
+        //计算新极点Q,角度制
+        var LOQ;//新极点经度
+        var LAQ;//新极点纬度
+
+        //经度
+        LOQ = Math.atan(-(tanLA2 * cosLO1 - tanLA1 * cosLO2) / (tanLA2 * sinLO1 - tanLA1 * sinLO2)) * 180 / Math.PI;
+        //纬度
+        LAQ = -Math.atan(Math.cos((LO1 - LOQ) / 180 * Math.PI) / tanLA1) * 180 / Math.PI;
+        //求航迹点
+        var difference = LO2 - LO1;//北京与巴黎的经差
+        var dx = difference / number;//航迹点间的经差
+      
+        var M=0;
+        var PointF=new Array();
+        PointF[M]=new Array();//存放航迹点
+   
+        //北京到新极点的距离平方
+        var rr = Math.pow((LOQ - LO2 ), 2) + Math.pow((LAQ - LA2 ), 2);
+       for(var i=0;i<number;i++)
+       {
+        
+        var x=LO2  - i * dx;//航轨迹点x，y
+        var y= Math.sqrt(rr - Math.pow((LOQ - x), 2)) + LAQ;
+        PointF[M]=new Point(x,y);
+        M=M+1;
+       }
+
+        var cxt=document.getElementById("cname").getContext("2d");
+
+        cxt.beginPath();
+        cxt.lineWidth =2; 
+        cxt.strokeStyle="red"; 
+         for (var j = 0; j < PointF.length-1; j++)
+        {
+            var a1 = 6378137;               //长半轴
+            var b1 = 6356752.3142;         //短半轴
+            var e01 = 0.00669437999013;    //第一偏心率平方
+            var e11 = 0.006739496742227;    //第二偏心率平方   
+
+            var xnworld= ((Math.pow(a1, 2) / b1) / Math.sqrt(1 + e11)) * Math.log((Math.tan(Math.PI / 4 + (PointF[j].y * Math.PI / 180) / 2)) * Math.pow(((1 - Math.sqrt(e01) * Math.sin(PointF[j].y * Math.PI / 180)) / (1 + Math.sqrt(e01) * Math.sin(PointF[j].y * Math.PI / 180))), (Math.sqrt(e01) / 2)), Math.E);
+            var yeworld = ((Math.pow(a1, 2) / b1) / Math.sqrt(1 + e11)) * ((PointF[j].x * Math.PI / 180) - 0);
+
+            var xnworld2=((Math.pow(a1, 2) / b1) / Math.sqrt(1 + e11)) * Math.log((Math.tan(Math.PI / 4 + (PointF[j+1].y * Math.PI / 180) / 2)) * Math.pow(((1 - Math.sqrt(e01) * Math.sin(PointF[j+1].y * Math.PI / 180)) / (1 + Math.sqrt(e01) * Math.sin(PointF[j+1].y * Math.PI / 180))), (Math.sqrt(e01) / 2)), Math.E);
+            var yeworld2=((Math.pow(a1, 2) / b1) / Math.sqrt(1 + e11)) * ((PointF[j+1].x * Math.PI / 180) - 0);
+
+            cxt.moveTo((yeworld)/100000+400,400-(xnworld)/100000);
+            cxt.lineTo((yeworld2)/100000+400,400-(xnworld2)/100000); 
+
+         }
+         cxt.stroke();
+    }
+
+              
+        
+
+    </script>
+</head> 
+<body>
