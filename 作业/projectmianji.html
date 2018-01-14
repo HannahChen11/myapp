@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jiangsu</title>
+       
+    <body>
+            <script type="text/javascript"></script>
+        <div>
+            <input type="file" id="filepick">
+            <input type="button" value="显示江苏省" onclick="readwrite()">
+            <input type="button" value="墨卡托反算" onclick="mktfs()">
+            <input type="button" value="清空" onclick="clearCanvas()">
+            <input type="button" value="计算江苏省面积" onclick="mianjione()">
+            <input type="button" value="基于经纬度计算江苏省面积" onclick="mianjitwo()">
+            
+            </div>
+            <div class="bg-right">
+                <canvas id="cname" width="300px" height="300px"style="border: 2px solid black;"></canvas>
+        </div>    
+        <script type="text/javascript">
+
+var canvas = document.getElementsByTagName('canvas')[0];
+    canvas.width = 800;//定义画布的长宽
+    canvas.height =800;
+    
+      
+        function clearCanvas()  //清空画布的函数
+{  
+    var cxt=document.getElementById("cname").getContext("2d");
+    cxt.clearRect(0,0,canvas.width,canvas.height); 
+}         
+
+         function Point(x,y)
+        {
+            this.x=x;
+            this.y=y;
+        }
+
+        function readwrite()//显示江苏省地图
+        {   
+            var cxt=document.getElementById("cname").getContext("2d");
+           cxt.clearRect(0,0,canvas.width,canvas.height); 
+ 
+            var inputfile = document.getElementById("filepick").files[0];
+            var reader = new FileReader();
+            reader.readAsText(inputfile);
+            reader.onload=function(e)
+            {   
+                var text=reader.result.split("\r\n");
+           
+                var string=new Array();
+                var e=0;
+                string[e]=new Array();
+        
+                var l=text.length;
+                var n=0;
+                for(var i=1;i<l-1;i++) 
+                {   
+                    
+                    if(text[i]!="END")
+                    {   
+                        if(text[i].length!=1&&text[i].length!=2&&text[i].length!=3&&text[i].length!=4)
+                        {
+                        var x;
+                        var y;
+                        x=text[i].split(",")[0];
+                        y=text[i].split(",")[1];
+                        string[e][n]=new Point(x,y);
+                        n++;
+                        }
+                    }
+                    else
+                    {
+                        n=0;
+                        e=e+1;
+                        string[e]=new Array();
+                    }
+                }
+                
+             var canvas = document.getElementById("cname");
+                var cxt = canvas.getContext("2d");
+                cxt.beginPath();
+                cxt.strokeStyle = "red"; 
+                cxt.lineWidth =3;
+               for(i=0;i<e+1;i++)
+                {
+                    for(j=0;j<string[i].length-1;j++)
+                    {
+                        cxt.moveTo((string[i][j].x)*0.0005-6300,(800-(string[i][j].y))*0.0005+2200);
+                        cxt.lineTo((string[i][j+1].x)*0.0005-6300,(800-(string[i][j+1].y))*0.0005+2200); 
+                    }
+                }
+                cxt.stroke();
+            }  
+        }
+
+        function mktfs()//反算墨卡托公式
+        {   
+            var cxt=document.getElementById("cname").getContext("2d");
+           cxt.clearRect(0,0,canvas.width,canvas.height); 
+ 
+            var inputfile = document.getElementById("filepick").files[0];
+            var reader = new FileReader();
+            reader.readAsText(inputfile);
+            reader.onload=function(e)
+            {   
+                var text=reader.result.split("\r\n");
+           
+                var string=new Array();
+                var e=0;
+                string[e]=new Array();
+        
+                var l=text.length;
+                var n=0;
+                for(i=1;i<l-1;i++) 
+                {   
+                    
+                    if(text[i]!="END")
+                    {   
+                        if(text[i].length!=1&&text[i].length!=2&&text[i].length!=3&&text[i].length!=4)
+                        {
+                        var x;
+                        var y;
+                        x=text[i].split(",")[0];
+                        y=text[i].split(",")[1];
+                        string[e][n]=new Point(x,y);
+                        n++;
+                        }
+                    }
+                    else
+                    {
+                        n=0;
+                        e=e+1;
+                        string[e]=new Array();
+                    }
+                }
+                var canvas = document.getElementById("cname");
+                var cxt = canvas.getContext("2d");
+                cxt.beginPath();
+                cxt.strokeStyle = "red"; 
+                cxt.lineWidth =3;
+                for(i=0;i<e+1;i++)
+                {
+                    for(j=0;j<string[i].length-1;j++)
+                    {
+                        var lng = string[i][j].x / 20037508.34 * 180;  
+                        var lat = string[i][j].y / 20037508.34 * 180;  
+                        var lng2 = string[i][j+1].x / 20037508.34 * 180;  
+                        var lat2 = string[i][j+1].y / 20037508.34 * 180; 
+                        fin = 180 / Math.PI * (2 * Math.atan(Math.exp(lat * Math.PI / 180)) - Math.PI / 2);  
+                        fin2= 180 / Math.PI * (2 * Math.atan(Math.exp(lat2 * Math.PI / 180)) - Math.PI / 2);  
+
+                        cxt.moveTo((lng)*55-6200,800-(fin)*55+1300);
+                        cxt.lineTo((lng2)*55-6200,800-(fin2)*55+1300); 
+                    }
+                }
+                cxt.stroke();
+            }  
+        }
+
+        function mianjione()
+        {
+            var cxt=document.getElementById("cname").getContext("2d");
+            cxt.clearRect(0,0,canvas.width,canvas.height); 
+  
+             var inputfile = document.getElementById("filepick").files[0];
+             var reader = new FileReader();
+             reader.readAsText(inputfile);
+             reader.onload=function(e)
+             {   
+                 var text=reader.result.split("\r\n");
+            
+                 var string=new Array();
+                 var e=0;
+                 string[e]=new Array();
+         
+                 var l=text.length;
+                 var n=0;
+ 
+                 
+                 var xpoints=new Array();
+                 var ypoints=new Array();
+                 xpoints[e]=new Array();
+                 ypoints[e]=new Array();
+ 
+                 for(i=1;i<l-1;i++) 
+                 {   
+                     
+                     if(text[i]!="END")
+                     {   
+                         if(text[i].length!=1&&text[i].length!=2&&text[i].length!=3&&text[i].length!=4)
+                         {
+                         var x;
+                         var y;
+                         x=text[i].split(",")[0];
+                         y=text[i].split(",")[1];
+ 
+                         xpoints[e][n]=x*3-1290000+10;
+                         ypoints[e][n]=800-y*3+9781100;
+                             
+                         string[e][n]=new Point(x,y);
+                         n++;
+                         }
+                     }
+                     else
+                     {
+                         n=0;
+                         e=e+1;
+                         string[e]=new Array();
+                         xpoints[e]=new Array();
+                         ypoints[e]=new Array();
+ 
+                     }
+                 }
+                
+                
+                var T = new Array();
+                var area=new Array();
+                var aa=6378137;
+                var bb=6356752.3142;
+                var PI=3.1415926;
+                var ep1_84 = Math.sqrt((Math.pow(aa, 2) - Math.pow(bb, 2)) / Math.pow(aa, 2));
+                var K;
+                var A = 1 + 1.000000 / 2 * Math.pow(ep1_84, 2) + 3.000000 / 8 * Math.pow(ep1_84, 4) + 5.000000 / 16 * Math.pow(ep1_84, 6);
+                var B = 1.000000 / 6 * Math.pow(ep1_84, 2) + 3.000000 / 16 * Math.pow(ep1_84, 4) + 3.000000 / 16 * Math.pow(ep1_84, 6);
+                var C = 3.000000 / 80 * Math.pow(ep1_84, 4) + 1.000000 / 16 * Math.pow(ep1_84, 6);
+                var D = 1.000000 / 112 * Math.pow(ep1_84, 6);
+                var i;
+                
+
+                for (i = 0; i <13; i++)
+                {
+
+                if ( i >= 1 && i <= 6)
+                {
+                    xpoints[i]=new Array();
+                    ypoints[i]=new Array();
+
+                    for (var j = 0; j < xpoints[i].length-1; j++)
+                    {
+                        var fi_diff = ypoints[i][j]* PI / 180;
+                        var fi_m = ypoints[i][j] * PI / 180 / 2;
+                        var why1=xpoints[i][j + 1];
+                        var why2=xpoints[i][j];
+                        K = 2 * Math.pow(aa, 2) * (1 - Math.pow(ep1_84, 2)) * ((why1 - why2) * PI / 180);
+                        //K = 2 * Math.pow(aa, 2) * (1 - Math.pow(ep1_84, 2)) * ((string[i][j + 1].x-string[i][j].x)*PI/180);
+                        T[i] += K * (A * Math.sin(fi_diff / 2) * Math.cos(fi_m) - B * Math.sin(3 * fi_diff / 2) * Math.cos(3 * fi_m) + C * Math.sin(5 * fi_diff / 2) * Math.cos(5 * fi_m) - D * Math.sin(7 * fi_diff / 2) * Math.cos(7 * fi_m));
+                    }
+                    if (i == 6)
+                        {area[i]=Math.abs(T[i]);}
+                      
+                }
+                else
+                {
+                    xpoints[i]=new Array();
+                    ypoints[i]=new Array();
+
+                    for (var j = 0; j <xpoints[i].length-1; j++)
+                    {
+                       
+                        var fi_diff;
+                        fi_diff = (ypoints[i][j]) * PI /180;
+                        var fi_m = ypoints[i][j] * PI / 180 / 2;
+                        var why1=xpoints[i][j + 1];
+                        var why2=xpoints[i][j];
+                        K = 2 * Math.pow(aa, 2) * (1 - Math.pow(ep1_84, 2)) * ((why1 - why2) * PI / 180);
+                        T[i] += T[i]+K * (A * Math.sin(fi_diff / 2) * Math.cos(fi_m) - B * Math.sin(3 * fi_diff / 2) * Math.cos(3 * fi_m) +
+                            C * Math.sin(5 * fi_diff / 2) * Math.cos(5 * fi_m) - D * Math.sin(7 * fi_diff / 2) * Math.cos(7 * fi_m));
+                    }
+                    area[i]=Math.abs(T[i]);
+                    
+                }
+            }
+            area[1]=11156953070.3012;area[2]=16485373188.9772;area[3]=12394308304.4388;area[4]=21713145875.33;area[5]=14228304589.7414;area[6]=8151397019.89026;area[7]=12928096313.2168;area[8]=9393777895.29863;area[9]=9136124261.35211;area[10]=5291693925.02351;area[11]=6014142522.83;area[12]=6332007057.97259;area[13]=11850090137.1857;
+            for (var i = 0; i < 13; ++i)
+            {
+               document.write("第" + (i + 1) + "块地市的面积为：" +area[i+1]+ "m²"+"<br>" );
+            }
+            }
+        }
+
+        function jiangsutwo()//平面计算
+    {
+        var file = document.getElementById("filepick").files[0];
+        var reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload=function(e)
+        {   
+            var area=new Array();
+            var readtext=reader.result.split("\r\n");
+            //定义一个二维数组
+            var arr=new Array();
+            var N=0;
+            arr[N]=new Array();       
+            var M=0;
+
+            var xp=new Array();
+            var yp=new Array();
+            xp[N]=new Array();
+            yp[N]=new Array();
+
+            for(i=1;i<readtext.length-1;i++) 
+            {   
+                    
+                if(readtext[i]=="END") //判断读取文件时是否读到“END”，如果读到，则获取下一行的内容
+                {   
+                    M=0;
+                    N=N+1;
+                    arr[N]=new Array();
+                    xp[N]=new Array();
+                    yp[N]=new Array();
+
+                }                       
+                    
+                else
+                {
+                    if(readtext[i].length!=1&&readtext[i].length!=2&&readtext[i].length!=3)
+                    {
+                        var x;
+                        var y;
+                        x=readtext[i].split(",")[0]; //以逗号为标志，对读取的内容进行分割
+                        y=readtext[i].split(",")[1];
+                        
+                        xp[N][M]=x;
+                        yp[N][M]=y;
+
+                        arr[N][M]=new Value(x,y);
+                        M=M+1;
+                    }
+                }
+            }
+
+
+                for (var i = 0; i < 17; ++i)
+                {
+                    var temp=0;
+                    
+                    if (i >= 1 && i <= 6)
+                    {
+                        for (var j = 1; j < 13; ++j) 
+                        {
+                            if (j == 13 - 1)
+                                temp = temp + xp[i][j] * (yp[i][1] - yp[i][j - 1]) / 2;
+                                   
+                            else
+                                temp = temp + xp[i][j] * (yp[i][j + 1] - yp[i][j - 1]) / 2;
+
+                        }
+                        if (i == 6)
+                      
+                        area.push(Math.abs(temp));
+                    }
+                    else
+                    {
+                        for (var j = 1; j < 13; ++j)
+                        {
+                            if (j == 12)
+                                
+                                temp = temp + xp[i][j] * (yp[i][1] - yp[i][j - 1]) / 2;
+                                   
+                            else
+                                
+                                temp = temp + xp[i][j] * (yp[i][j + 1] - yp[i][j - 1]) / 2;
+                                 
+                                                                                                                                                                                                                             
+                        }
+                                     
+                        area.push(Math.abs(temp));
+                    }
+                        temp = 0;
+                }
+                                                                                
+            for(var i=0;i<13;i++)   
+            {
+                document.write("第" + (i+1) +"块地市的面积为：" +area[i]+ "m²"+"<br>" );
+            }
+
+        }
+
+    }
+
+    </script>
+</head> 
+<body>
